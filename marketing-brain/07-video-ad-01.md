@@ -80,3 +80,68 @@
 
 ## חסם תפעולי בסביבה הזו
 מדיניות ה-egress של הסשן חוסמת את שרת ההעלאה של שירות הווידאו (‏403 על `ak-data.magnific.com`), ולכן לא ניתן להעלות את התמונה מצד השרת. ההעלאה חייבת להתבצע מהדפדפן של המשתמש.
+
+---
+
+# פרומפטים מוכנים להדבקה (Seedance / MakeUGC / כל כלי image-to-video)
+
+**פריים פתיחה לכל השוטים:** `https://cdn.shopify.com/s/files/1/0757/8979/5373/files/tiamora-night-couch-base.png`
+(הועלה ל-Shopify Files ב-2026-09-09 כדי לתת לתמונה כתובת ציבורית שכלי הווידאו יכולים למשוך.)
+
+**הגדרות:** ‏1:1 · 1080p · אודיו נייטיב · **בלי מוזיקה** · סה"כ 25 שניות.
+
+### שוט 1 — 3 שניות · `pushIn` איטי
+```
+Illustrated animation matching the start image exactly. A woman in her thirties with brown
+wavy hair in a loose high bun, amber-tinted glasses in dark rectangular frames, cream knit
+sweater, sitting on a blue couch in a warm candlelit living room, a golden retriever asleep
+against her, a glowing TV behind her. She looks straight into the camera and speaks, mouth
+moving in precise natural lip synchronization, in warm unhurried conversational Israeli
+Hebrew: "אני לא מוותרת על הפרק שלי בערב. אבל הפסקתי להאשים את עצמי בגלל זה."
+Small relaxed smile at the end of the line. Quiet living-room ambience, no music.
+```
+
+### שוט 2 — 8 שניות · `static` מאקרו
+```
+Macro close-up on the same amber-tinted lens in its dark rectangular frame, the blue glow of
+the television visible ahead of it and warmed to amber as it passes through the lens. The
+woman does not speak and is not in frame beyond the lens and her cheekbone. Same illustrated
+style, same warm candlelit colour grade. The same warm calm female Israeli voice narrates
+off-screen, unhurried: "כי זה לא הפרק שמפריע לשינה. זה האור שיוצא מהמסך. הוא אומר לגוף
+שעדיין יום, ואז המלטונין, ההורמון שמאותת לנו להירדם, פשוט לא מתחיל להיווצר."
+Quiet room tone, no music.
+```
+
+### שוט 3 — 8 שניות · `static`
+```
+Back to the same woman with brown wavy hair in a loose high bun, amber-tinted glasses in dark
+rectangular frames, cream knit sweater, on the blue couch beside the sleeping golden
+retriever, TV glowing behind her. She lifts one hand and gently adjusts the glasses on her
+nose, settles back toward the screen, and speaks to camera with precise natural lip
+synchronization in the same warm calm Israeli Hebrew: "אז אני לא מכבה כלום. אני מרכיבה את
+אלה. עדשת ענבר, תשעים ושבעה אחוז חסימה. הפרק נשאר בדיוק אותו פרק, האור הכחול פשוט לא מגיע
+לעיניים." Same illustrated style throughout. Quiet ambience, no music.
+```
+
+### שוט 4 — 6 שניות · `pedestalUp` איטי
+```
+The amber-lensed glasses in their dark rectangular frames rest folded on the low table beside
+the white popcorn bowl, the television still glowing softly in the background, candles
+flickering. No people speaking on camera. Same illustrated style and warm candlelit grade.
+The same warm calm female Israeli voice narrates off-screen: "ארבעה עשר לילות לנסות. אם זה לא
+עשה לך כלום, הכסף חוזר, והמשקפיים נשארים אצלך." Quiet room tone, no music.
+```
+
+**טקסט על המסך בשוט 4:** ‏14 לילות. הכסף חוזר, המשקפיים נשארים.
+
+---
+
+## למה הסרטון לא הופק בסשן הזה — תיעוד
+
+| שירות | תוצאה |
+|---|---|
+| Higgsfield | ‏`Out of credits` — יתרה 3.42, תוכנית starter. ‏Seedance 2.5 גם דורש תוכנית plus ומעלה |
+| Magnific / Seedance Pro 2.5 | ‏`Tool usage limit reached` — מכסת השימוש מוצתה |
+| העלאה ישירה לשרת הווידאו | חסומה במדיניות ה-egress של הסביבה (‏403 על `ak-data.magnific.com`) — נעקפה דרך Shopify CDN |
+
+**מה כן נסגר:** התמונה מתארחת בכתובת ציבורית, יובאה בהצלחה לשני השירותים, והפרומפטים אומתו מול מגבלות המודל. **חסר רק תקציב הפקה.**
