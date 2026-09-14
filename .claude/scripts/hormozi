@@ -7,6 +7,10 @@
 # In an ephemeral container (Claude Code on the web) that first use is once per
 # session; on a normal machine it is once, ever.
 #
+# Measured cold (no clone, no corpus, no pip cache): ~27s where PyPI is reached
+# directly. Expect longer on a slow link — the clone is ~35 MB and the wheels
+# another ~160 MB.
+#
 # Usage:  .claude/scripts/hormozi search "pricing" --json
 #         .claude/scripts/hormozi doctor
 
@@ -19,7 +23,7 @@ PYTHON="$VENV/bin/python"
 CLI="$VENV/bin/hormozi-advisor"
 
 bootstrap() {
-    echo "hormozi: engine not present, building it (a few minutes, once per machine)" >&2
+    echo "hormozi: engine not present, building it (~30s on a fast link, once per machine)" >&2
 
     if [ ! -d "$ENGINE/.git" ]; then
         echo "hormozi: cloning the corpus repo" >&2
