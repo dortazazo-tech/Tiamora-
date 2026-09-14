@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+# Wrapper around the hormozi-advisor CLI.
+#
+# The engine is ~300 MB of virtualenv, transcript index and search model, so it
+# is not committed here. It lives outside the repo and is built on first use.
+# In an ephemeral container (Claude Code on the web) that first use is once per
+# session; on a normal machine it is once, ever.
+#
+# Measured cold (no clone, no corpus, no pip cache): ~27s where PyPI is reached
+# directly. Expect longer on a slow link — the clone is ~35 MB and the wheels
+# another ~160 MB.
+#
+# Usage:  .claude/scripts/hormozi search "pricing" --json
+#         .claude/scripts/hormozi doctor
+
+set -euo pipefail
+
+ENGINE="${HORMOZI_ENGINE_HOME:-$HOME/.hormozi-ai-skill}"
+UPSTREAM="https://github.com/viclaranja/hormozi-ai-skill.git"
+VENV="$ENGINE/.venv"
+PYTHON="$VENV/bin/python"
+CLI="$VENV/bin/hormozi-advisor"
+
+bootstrap() {
+    echo "hormozi: engine not present, building it (~30s on a fast link, once per machine)" >&2
+
+    if [ ! -d "$ENGINE/.git" ]; then
+        echo "hormozi: cloning the corpus repo" >&2
+        git clone --depth 1 "$UPSTREAM" "$ENGINE" >&2
+    fi
+
+    local bundle="$ENGINE/release-assets/hormozi-advisor-data-c3380be1.tar.gz"
+    local checksums="$ENGINE/release-assets/assets.sha256"
+    [ -f "$bundle" ] && [ -f "$checksums" ] || {
+        echo "hormozi: corpus bundle missing from $ENGINE/release-assets/" >&2
+        exit 1
+    }
+
+    # 3.13/3.14 have no wheels in requirements.lock; probe for one that does.
+    local launcher=""
+    for candidate in python3.12 python3.11 python3; do
+        command -v "$candidate" >/dev/null 2>&1 || continue
+        if "$candidate" -c 'import sys; raise SystemExit(0 if (3,11) <= sys.version_info < (3,13) else 1)' 2>/dev/null; then
+            launcher="$candidate"; break
+        fi
+    done
+    [ -n "$launcher" ] || {
+        echo "hormozi: no Python 3.11 or 3.12 found. Install one, then retry." >&2
+        exit 1
+    }
+
+    [ -x "$PYTHON" ] || "$launcher" -m venv "$VENV" >&2
+
+    # Semantic search is an optional extra. If its wheels cannot be fetched the
+    # engine still works on keyword search, so a failure here is not fatal.
+    "$PYTHON" -m pip install --quiet --disable-pip-version-check --require-hashes \
+        -r "$ENGINE/requirements.lock" >&2 \
+        || echo "hormozi: semantic extras unavailable, continuing with keyword search" >&2
+    "$PYTHON" -m pip install --quiet --disable-pip-version-check --no-deps "$ENGINE" >&2
+
+    "$CLI" install-data --bundle "$bundle" --sha-file "$checksums" >&2
+}
+
+[ -x "$CLI" ] || bootstrap
+
+exec "$CLI" "$@"

@@ -1,0 +1,6 @@
+{
+  "name": "Ask Hormozi",
+  "description": "Searches public MoreMozi video transcripts and answers with exact YouTube timestamp citations.",
+  "version": "1.0.0",
+  "invocation": "natural-language"
+}
