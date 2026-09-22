@@ -1,0 +1,429 @@
+{%- liquid
+  assign lick = all_products['משטח-ליקוק-לכלבים']
+  assign ball = all_products['כדור-חטיפים-מתגלגל-לכלבים']
+  assign free_ship_threshold = 23900
+-%}
+{% if pj_product != blank %}
+<div id="pj-{{ section.id }}" class="pj-page" dir="rtl" data-pj-threshold="{{ free_ship_threshold }}">
+  <div class="pj-topbar">
+    <span>🚚 משלוח 7–14 ימי עסקים</span>
+    <span>🛡️ תשלום מאובטח</span>
+    <span>📦 14 יום החזר כספי</span>
+    <span>🇮🇱 שירות בעברית</span>
+  </div>
+
+  <header class="pj-header">
+    <a class="pj-logo" href="/"><span class="pj-paw">🐾</span><span>PawJoy</span></a>
+    <nav>
+      <a href="/">עמוד הבית</a>
+      <a href="#pj-benefits-{{ section.id }}">למה PawJoy?</a>
+      <a href="#pj-faq-{{ section.id }}">שאלות נפוצות</a>
+    </nav>
+    <button class="pj-cart-icon" type="button" data-pj-open-cart>🛒</button>
+  </header>
+
+  <main class="pj-main">
+    <section class="pj-hero">
+      <div class="pj-gallery">
+        <div class="pj-main-image">
+          {% if pj_product.featured_image %}
+            {{ pj_product.featured_image | image_url: width: 1400 | image_tag: loading: 'eager', alt: pj_product.title }}
+          {% else %}
+            <div class="pj-placeholder">תמונת מוצר</div>
+          {% endif %}
+          <div class="pj-image-note">הופכים את זמן האוכל למשחק 🐶</div>
+        </div>
+        {% if pj_product.images.size > 1 %}
+          <div class="pj-thumbs">
+            {% for image in pj_product.images limit: 5 %}
+              <button type="button" class="pj-thumb" data-pj-thumb="{{ image | image_url: width: 1400 }}">
+                {{ image | image_url: width: 180 | image_tag: alt: pj_product.title }}
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="pj-info">
+        <div class="pj-badge">🐾 תעסוקה יומיומית לכלב</div>
+        <h1>הכלב שלכם מסיים את האוכל ב-40 שניות. המשטח הזה מחזיק אותו 15 דקות.</h1>
+        <p class="pj-sub">מפזרים חטיפים בין הסיבים, והכלב מריח, מחפש, מתעסק ונהנה. אכילה איטית שמונעת בליעת אוויר, תעסוקה שמפחיתה שעמום — וחצי שעה שקטה גם כשאתם לא בבית.</p>
+
+        <div id="pj-benefits-{{ section.id }}" class="pj-benefits">
+          <div><b>🧠</b><span>מעודד חיפוש וחשיבה</span></div>
+          <div><b>😊</b><span>מפחית שעמום</span></div>
+          <div><b>🍽️</b><span>מאט את קצב האכילה</span></div>
+          <div><b>❤️</b><span>לכל הגזעים והגדלים</span></div>
+        </div>
+
+        <div class="pj-guarantee">
+          <strong>🛡️ 14 יום להחזיר — ואנחנו סופגים את דמי הביטול.</strong>
+          <span>החוק מתיר לנו לגבות עד ₪100 דמי ביטול. אנחנו לא גובים.</span>
+        </div>
+
+        <h2 class="pj-choose">בחרו את החבילה שלכם:</h2>
+        <div class="pj-bundles">
+          {% for variant in pj_product.variants %}
+            {%- liquid
+              assign idx = forloop.index
+              assign is_featured = false
+              if idx == 2
+                assign is_featured = true
+              endif
+              assign saving = 0
+              if variant.compare_at_price > variant.price
+                assign saving = variant.compare_at_price | minus: variant.price
+              endif
+              assign unit = variant.price | divided_by: idx
+            -%}
+            <label class="pj-bundle{% if is_featured %} is-featured{% endif %}">
+              {% if is_featured %}<span class="pj-popular">הכי משתלם</span>{% endif %}
+              <input
+                type="radio"
+                name="pj-bundle-{{ section.id }}"
+                value="{{ variant.id }}"
+                data-price="{{ variant.price | money_without_trailing_zeros | escape }}"
+                data-price-cents="{{ variant.price }}"
+                data-title="{{ variant.title | escape }}"
+                data-index="{{ idx }}"
+                {% if is_featured %}checked{% endif %}
+              >
+              <span class="pj-bundle-icon">{% for i in (1..idx) %}🐾{% endfor %}</span>
+              <strong>{{ variant.title }}</strong>
+              <span class="pj-bundle-desc">
+                {%- case idx -%}
+                  {%- when 1 -%}להתחיל — לנסות איך הכלב מגיב
+                  {%- when 2 -%}זוג סבב — תמיד יש משטח נקי
+                  {%- else -%}ערכת סבב מלאה — {{ unit | money_without_trailing_zeros }} ליחידה
+                {%- endcase -%}
+              </span>
+              <span class="pj-bundle-price">
+                {{ variant.price | money_without_trailing_zeros }}
+                {% if saving > 0 %}<s>{{ variant.compare_at_price | money_without_trailing_zeros }}</s>{% endif %}
+              </span>
+              {% if saving > 0 %}<span class="pj-bundle-save">חיסכון {{ saving | money_without_trailing_zeros }}</span>{% endif %}
+            </label>
+          {% endfor %}
+        </div>
+
+        <input type="hidden" data-pj-variant-id value="">
+        <button type="button" class="pj-add" data-pj-add>
+          <span>🛒 הוסיפו לעגלה</span>
+          <span data-pj-button-price></span>
+        </button>
+        <p class="pj-micro">משלוח 7–14 ימי עסקים · תשלום מאובטח SSL · 14 יום החזר כספי</p>
+
+        <div class="pj-trust">
+          <span>🚚 משלוח לכל הארץ</span>
+          <span>🔒 תשלום מאובטח</span>
+          <span>📦 14 יום החזר כספי</span>
+          <span>🇮🇱 שירות בעברית</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="pj-accordions" id="pj-faq-{{ section.id }}">
+      <details open>
+        <summary>🐾 כל הפרטים על המוצר</summary>
+        <div class="pj-rte">{{ pj_product.description }}</div>
+      </details>
+      <details>
+        <summary>✅ איך מתחילים?</summary>
+        <p>מתחילים בכמות קטנה של מזון במקומות גלויים, כדי שהכלב יבין מה קורה. אחרי יום-יומיים מסתירים עמוק יותר בין שכבות הבד. רוב הכלבים מגיעים ל-10–15 דקות תעסוקה תוך שבוע.</p>
+      </details>
+    </section>
+
+    <section class="pj-why">
+      <h2>למה לבחור ב-PawJoy</h2>
+      <div class="pj-why-grid">
+        <div><b>💎</b><span>מוצרים איכותיים</span></div>
+        <div><b>❤️</b><span>כלבים מאושרים</span></div>
+        <div><b>🌿</b><span>פתרונות מעשיים</span></div>
+        <div><b>🇮🇱</b><span>שירות בעברית</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pj-footer">
+    <div class="pj-logo"><span class="pj-paw">🐾</span><span>PawJoy</span></div>
+    <p>Happy Dogs. Happier Days.</p>
+    <nav class="pj-footer-links">
+      <a href="/pages/shipping-policy">מדיניות משלוחים</a>
+      <a href="/pages/refund-policy">ביטול והחזרות</a>
+      <a href="/pages/privacy-policy">מדיניות פרטיות</a>
+      <a href="/pages/terms-of-service">תנאי שימוש</a>
+    </nav>
+    <p class="pj-legal">[שם העוסק] · ח.פ./ע.מ. [מספר] · [כתובת] · [טלפון] · [דוא"ל]</p>
+  </footer>
+
+  <div class="pj-overlay" data-pj-overlay></div>
+  <aside class="pj-drawer" data-pj-drawer aria-hidden="true">
+    <div class="pj-drawer-head">
+      <button type="button" data-pj-close>×</button>
+      <h2>העגלה שלך</h2>
+    </div>
+    <div class="pj-cart-product">
+      {% if pj_product.featured_image %}
+        {{ pj_product.featured_image | image_url: width: 240 | image_tag: alt: pj_product.title }}
+      {% endif %}
+      <div>
+        <strong data-pj-cart-title>החבילה שבחרת</strong>
+        <div class="pj-cart-price" data-pj-cart-price></div>
+      </div>
+    </div>
+
+    <div class="pj-ship-bar">
+      <div class="pj-ship-text" data-pj-ship-text></div>
+      <div class="pj-ship-track"><div class="pj-ship-fill" data-pj-ship-fill></div></div>
+    </div>
+
+    <div class="pj-upsells">
+      <h3>השלימו את החבילה</h3>
+      {% if lick != blank and lick.first_available_variant != blank %}
+        {%- assign lv = lick.first_available_variant -%}
+        <div class="pj-up-card">
+          <div class="pj-up-icon">👅</div>
+          <div class="pj-up-copy">
+            <strong>{{ lick.title }}</strong>
+            <span>מעולה להרגעה ולהסחה</span>
+            <b>{{ lv.price | money_without_trailing_zeros }}
+              {% if lv.compare_at_price > lv.price %}<s>{{ lv.compare_at_price | money_without_trailing_zeros }}</s>{% endif %}
+            </b>
+          </div>
+          <button type="button" data-pj-upsell="{{ lv.id }}" data-pj-upsell-price="{{ lv.price }}">+ הוספה</button>
+        </div>
+      {% endif %}
+      {% if ball != blank and ball.first_available_variant != blank %}
+        {%- assign bv = ball.first_available_variant -%}
+        <div class="pj-up-card">
+          <div class="pj-up-icon">🎾</div>
+          <div class="pj-up-copy">
+            <strong>{{ ball.title }}</strong>
+            <span>משחק שממשיך אחרי הארוחה</span>
+            <b>{{ bv.price | money_without_trailing_zeros }}
+              {% if bv.compare_at_price > bv.price %}<s>{{ bv.compare_at_price | money_without_trailing_zeros }}</s>{% endif %}
+            </b>
+          </div>
+          <button type="button" data-pj-upsell="{{ bv.id }}" data-pj-upsell-price="{{ bv.price }}">+ הוספה</button>
+        </div>
+      {% endif %}
+    </div>
+
+    <a href="/checkout" class="pj-checkout">מעבר לתשלום</a>
+    <button class="pj-continue" type="button" data-pj-close>המשך קנייה</button>
+  </aside>
+</div>
+
+<style>
+.pawjoy-active .shopify-section-group-header-group,
+.pawjoy-active .shopify-section-group-footer-group{display:none!important}
+.pj-page{--green:#0b4a37;--green2:#16734f;--mint:#eaf7ee;--cream:#fbfaf6;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;font-family:Arial,sans-serif;color:var(--ink);background:#fff;direction:rtl}
+.pj-page *{box-sizing:border-box}
+.pj-topbar{background:var(--green);color:#fff;display:flex;justify-content:center;gap:48px;padding:10px 20px;font-size:14px;flex-wrap:wrap}
+.pj-header{max-width:1240px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--line);background:#fff}
+.pj-logo{display:flex;align-items:center;gap:8px;color:var(--green);font-size:28px;font-weight:800;text-decoration:none}
+.pj-paw{font-size:30px}
+.pj-header nav{display:flex;gap:30px}
+.pj-header nav a{color:#1f2937;text-decoration:none;font-weight:700;font-size:15px}
+.pj-cart-icon{border:0;background:transparent;font-size:24px;cursor:pointer}
+.pj-main{max-width:1240px;margin:auto;padding:28px 24px 50px}
+.pj-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:42px;align-items:start}
+.pj-main-image{position:relative;background:var(--cream);border-radius:24px;overflow:hidden;aspect-ratio:1/1;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.pj-main-image img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.pj-image-note{position:absolute;bottom:22px;right:22px;background:rgba(255,255,255,.92);padding:10px 14px;border-radius:999px;font-weight:800;font-size:14px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.pj-thumbs{display:flex;gap:10px;margin-top:12px}
+.pj-thumb{width:72px;height:72px;border:1px solid var(--line);border-radius:12px;overflow:hidden;padding:0;background:#fff;cursor:pointer}
+.pj-thumb img{width:100%;height:100%;object-fit:cover}
+.pj-badge{display:inline-flex;background:#dff3d8;color:#194d32;padding:8px 14px;border-radius:999px;font-weight:800;font-size:14px}
+.pj-info h1{font-size:38px;line-height:1.15;margin:18px 0 12px;letter-spacing:-1px}
+.pj-sub{font-size:17px;line-height:1.7;color:#4b5563;margin:0 0 22px}
+.pj-benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+.pj-benefits div{display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;font-size:13px;font-weight:700}
+.pj-benefits b{font-size:30px}
+.pj-guarantee{display:flex;flex-direction:column;gap:4px;background:#f4f8f4;border-right:4px solid var(--green);padding:14px 16px;border-radius:8px;margin:18px 0}
+.pj-guarantee strong{color:var(--green);font-size:15px}
+.pj-guarantee span{font-size:13px;color:#4b5563}
+.pj-choose{font-size:20px;margin:26px 0 14px}
+.pj-bundles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pj-bundle{position:relative;border:1.5px solid #d1d5db;border-radius:18px;padding:22px 12px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;cursor:pointer;background:#fff;transition:.2s}
+.pj-bundle:has(input:checked){border-color:#20a35a;box-shadow:0 0 0 2px rgba(32,163,90,.1);background:#f8fff9}
+.pj-bundle input{position:absolute;opacity:0}
+.pj-bundle-icon{font-size:22px;min-height:30px;letter-spacing:-2px}
+.pj-bundle strong{font-size:16px}
+.pj-bundle-desc{font-size:12px;color:var(--muted);min-height:34px;line-height:1.5}
+.pj-bundle-price{font-size:24px;font-weight:900;display:flex;align-items:baseline;gap:6px;justify-content:center;flex-wrap:wrap}
+.pj-bundle-price s{font-size:14px;font-weight:600;color:var(--muted)}
+.pj-bundle-save{background:#e7f6ec;color:#166534;font-size:11px;font-weight:900;padding:4px 10px;border-radius:999px}
+.pj-popular{position:absolute;top:-12px;background:#1fa85a;color:#fff;border-radius:999px;padding:5px 12px;font-size:11px;font-weight:900}
+.pj-add{width:100%;border:0;border-radius:14px;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;font-size:20px;font-weight:900;padding:18px;margin-top:18px;display:flex;justify-content:center;gap:10px;cursor:pointer;box-shadow:0 10px 24px rgba(11,74,55,.18)}
+.pj-add:disabled{opacity:.65;cursor:wait}
+.pj-micro{text-align:center;font-size:12px;color:var(--muted);margin:10px 0 0}
+.pj-trust{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px;text-align:center;color:#4b5563;font-size:12px}
+.pj-accordions{margin:38px 0 22px;display:grid;gap:12px}
+.pj-accordions details{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:#fff}
+.pj-accordions summary{font-weight:900;cursor:pointer;font-size:17px}
+.pj-accordions p{color:#4b5563;line-height:1.7}
+.pj-rte{margin-top:14px}
+.pj-rte h3{font-size:18px;margin:18px 0 8px}
+.pj-rte ul{padding-right:1.2em}
+.pj-why{background:var(--cream);border-radius:22px;padding:28px;margin-top:18px;text-align:center}
+.pj-why h2{margin-top:0;font-size:28px}
+.pj-why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.pj-why-grid div{display:flex;flex-direction:column;gap:8px;align-items:center;font-weight:800;font-size:14px}
+.pj-why-grid b{font-size:30px}
+.pj-footer{text-align:center;padding:32px;background:#f7f8f7;border-top:1px solid var(--line)}
+.pj-footer .pj-logo{justify-content:center}
+.pj-footer p{color:var(--muted)}
+.pj-footer-links{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:16px 0}
+.pj-footer-links a{color:#374151;font-size:13px;text-decoration:underline}
+.pj-legal{font-size:12px;color:#9ca3af}
+.pj-overlay{position:fixed;inset:0;background:rgba(0,0,0,.42);opacity:0;pointer-events:none;transition:.2s;z-index:9997}
+.pj-overlay.is-open{opacity:1;pointer-events:auto}
+.pj-drawer{position:fixed;top:0;left:0;width:min(440px,94vw);height:100vh;background:#fff;z-index:9998;transform:translateX(-102%);transition:.25s;box-shadow:10px 0 40px rgba(0,0,0,.15);padding:20px;overflow:auto;direction:rtl}
+.pj-drawer.is-open{transform:translateX(0)}
+.pj-drawer-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px}
+.pj-drawer-head button{border:0;background:transparent;font-size:30px;cursor:pointer}
+.pj-drawer-head h2{margin:0;font-size:24px}
+.pj-cart-product{display:flex;gap:14px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.pj-cart-product img{width:86px;height:86px;object-fit:cover;object-position:top;border-radius:14px}
+.pj-cart-price{font-weight:900;font-size:20px;margin-top:5px}
+.pj-ship-bar{padding:16px 0;border-bottom:1px solid var(--line)}
+.pj-ship-text{font-size:13px;font-weight:800;margin-bottom:8px;text-align:center}
+.pj-ship-track{height:8px;background:#e9ecef;border-radius:999px;overflow:hidden}
+.pj-ship-fill{height:100%;width:0;background:linear-gradient(90deg,var(--green2),#2ecc71);border-radius:999px;transition:width .3s}
+.pj-upsells h3{margin:20px 0 12px}
+.pj-up-card{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
+.pj-up-icon{width:54px;height:54px;border-radius:12px;background:var(--mint);display:grid;place-items:center;font-size:27px}
+.pj-up-copy{display:flex;flex-direction:column;gap:3px}
+.pj-up-copy span{font-size:12px;color:var(--muted)}
+.pj-up-copy s{font-size:12px;font-weight:600;color:var(--muted);margin-right:5px}
+.pj-up-card button{border:0;background:var(--green2);color:#fff;padding:10px 12px;border-radius:10px;font-weight:900;cursor:pointer}
+.pj-checkout{display:block;text-align:center;background:var(--green);color:#fff;text-decoration:none;font-weight:900;padding:16px;border-radius:12px;margin-top:18px}
+.pj-continue{width:100%;border:0;background:transparent;padding:14px;color:#4b5563;cursor:pointer}
+@media(max-width:900px){
+  .pj-topbar{gap:12px;font-size:11px;padding:8px}
+  .pj-topbar span:nth-child(n+3){display:none}
+  .pj-header{padding:14px 16px}.pj-header nav{display:none}.pj-logo{font-size:23px}
+  .pj-main{padding:18px 14px 36px}.pj-hero{grid-template-columns:1fr;gap:24px}
+  .pj-info h1{font-size:28px}
+  .pj-benefits{grid-template-columns:repeat(2,1fr)}
+  .pj-bundles{grid-template-columns:1fr}
+  .pj-bundle{display:grid;grid-template-columns:52px 1fr auto;text-align:right;align-items:center;padding:14px;gap:4px 10px}
+  .pj-bundle-icon{grid-row:1/4}
+  .pj-bundle strong{align-self:end}
+  .pj-bundle-price{grid-row:1/3;grid-column:3;font-size:21px;flex-direction:column;gap:0}
+  .pj-bundle-save{grid-column:3;font-size:10px}
+  .pj-popular{top:-9px;left:12px}
+  .pj-trust{grid-template-columns:repeat(2,1fr)}
+  .pj-why-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('pj-{{ section.id }}');
+  if(!root) return;
+  document.body.classList.add('pawjoy-active');
+
+  var THRESHOLD = Number(root.dataset.pjThreshold) || 23900;
+  var radios = root.querySelectorAll('input[name="pj-bundle-{{ section.id }}"]');
+  var hidden = root.querySelector('[data-pj-variant-id]');
+  var btn = root.querySelector('[data-pj-add]');
+  var btnPrice = root.querySelector('[data-pj-button-price]');
+  var drawer = root.querySelector('[data-pj-drawer]');
+  var overlay = root.querySelector('[data-pj-overlay]');
+  var cartTitle = root.querySelector('[data-pj-cart-title]');
+  var cartPrice = root.querySelector('[data-pj-cart-price]');
+  var shipText = root.querySelector('[data-pj-ship-text]');
+  var shipFill = root.querySelector('[data-pj-ship-fill]');
+
+  function money(cents){
+    return '₪' + (cents/100).toFixed(2).replace(/\.00$/,'');
+  }
+  function selected(){
+    return root.querySelector('input[name="pj-bundle-{{ section.id }}"]:checked') || radios[0];
+  }
+  function sync(){
+    var r = selected();
+    if(!r) return;
+    if(!r.checked) r.checked = true;
+    hidden.value = r.value;
+    btnPrice.textContent = '— ' + r.dataset.price;
+    cartTitle.textContent = r.dataset.title;
+    cartPrice.textContent = r.dataset.price;
+    renderShip(Number(r.dataset.priceCents) || 0);
+  }
+  function renderShip(total){
+    if(!shipText || !shipFill) return;
+    var remaining = THRESHOLD - total;
+    if(remaining <= 0){
+      shipText.textContent = '🎉 יש לכם משלוח חינם!';
+      shipFill.style.width = '100%';
+    } else {
+      shipText.textContent = '🚚 נותרו ' + money(remaining) + ' למשלוח חינם';
+      shipFill.style.width = Math.min(100, (total/THRESHOLD)*100) + '%';
+    }
+  }
+  function refreshFromCart(){
+    fetch('/cart.js',{headers:{'Accept':'application/json'}})
+      .then(function(r){return r.json()})
+      .then(function(cart){ renderShip(cart.total_price); })
+      .catch(function(){});
+  }
+  radios.forEach(function(r){r.addEventListener('change',sync)});
+  sync();
+
+  function openDrawer(){drawer.classList.add('is-open');overlay.classList.add('is-open');drawer.setAttribute('aria-hidden','false');refreshFromCart()}
+  function closeDrawer(){drawer.classList.remove('is-open');overlay.classList.remove('is-open');drawer.setAttribute('aria-hidden','true')}
+  root.querySelectorAll('[data-pj-open-cart]').forEach(function(el){el.addEventListener('click',openDrawer)});
+  root.querySelectorAll('[data-pj-close]').forEach(function(el){el.addEventListener('click',closeDrawer)});
+  overlay.addEventListener('click',closeDrawer);
+
+  btn.addEventListener('click',function(){
+    var r = selected();
+    if(!r) return;
+    btn.disabled = true;
+    fetch('/cart/add.js',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({items:[{id:Number(r.value),quantity:1}]})
+    }).then(function(res){
+      if(!res.ok) throw new Error('cart');
+      return res.json();
+    }).then(function(){
+      openDrawer();
+    }).catch(function(){
+      alert('לא הצלחנו להוסיף לעגלה. נסו שוב.');
+    }).finally(function(){btn.disabled=false});
+  });
+
+  root.querySelectorAll('[data-pj-upsell]').forEach(function(up){
+    up.addEventListener('click',function(){
+      var id = Number(up.dataset.pjUpsell);
+      up.disabled = true;
+      fetch('/cart/add.js',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({items:[{id:id,quantity:1}]})
+      }).then(function(res){
+        if(!res.ok) throw new Error('upsell');
+        up.textContent='נוסף ✓';
+        refreshFromCart();
+      }).catch(function(){
+        up.disabled=false;
+        alert('לא הצלחנו להוסיף את התוספת.');
+      });
+    });
+  });
+
+  root.querySelectorAll('[data-pj-thumb]').forEach(function(t){
+    t.addEventListener('click',function(){
+      var img = root.querySelector('.pj-main-image img');
+      if(img) img.src = t.dataset.pjThumb;
+    });
+  });
+})();
+</script>
+{% else %}
+<div style="padding:40px;text-align:center">יש לבחור מוצר להצגה.</div>
+{% endif %}
