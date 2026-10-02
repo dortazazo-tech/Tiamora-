@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8">
+<title>TIAMORA · שלושה דברים שכבר ניסיתם</title>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAF6EF;--ink:#0C1B33;--or:#C9900C;--soft:#F3E7CC;--mut:#7C8494;--line:#E6DFD2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1080px;background:#ccc}
+.s{position:relative;width:1080px;height:1350px;overflow:hidden;background:var(--bg);font-family:Heebo,sans-serif;color:var(--ink)}
+.s.dark{background:var(--ink);color:#FAF6EF}
+.s:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#0C1B3309 1px,transparent 1px),linear-gradient(90deg,#0C1B3309 1px,transparent 1px);background-size:54px 54px}
+.s.dark:before{background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px)}
+.blob{position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(#C9900C2e,#C9900C00 68%);left:-260px;top:-240px}
+.num{position:absolute;left:56px;top:56px;font:900 280px/0.8 'Frank Ruhl Libre';color:transparent;-webkit-text-stroke:4px var(--or);direction:ltr}
+.tag{position:absolute;right:64px;top:72px;font:800 30px Heebo;background:var(--ink);color:#FAF6EF;border-radius:40px;padding:6px 26px}
+.dark .tag{background:var(--or);color:var(--ink)}
+.tag b{color:var(--or)}
+h1{position:absolute;right:64px;top:140px;width:760px;font:900 112px/1.02 'Frank Ruhl Libre';text-align:right;letter-spacing:-1px}
+h1 .o{color:var(--or)}
+.sub{position:absolute;right:64px;width:860px;font:500 36px/1.45 Heebo;text-align:right;color:#2B3446}
+.dark .sub{color:#D9DCE3}
+.sub b{color:var(--or);font-weight:800}
+.win{position:absolute;background:#fff;border-radius:26px;border:3px solid var(--ink);box-shadow:12px 12px 0 var(--or);overflow:hidden;color:var(--ink)}
+.bar{height:58px;border-bottom:2px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 22px;direction:ltr;font:700 22px Heebo;color:var(--mut)}
+.bar i{width:15px;height:15px;border-radius:50%;display:block}
+.bar span{margin-left:auto;color:var(--ink);direction:rtl}
+.body{padding:26px 30px;display:flex;flex-direction:column;gap:16px}
+.row{display:flex;align-items:center;gap:16px;border:2px solid var(--line);border-radius:16px;padding:14px 20px;font:700 28px Heebo;background:#fff}
+.row .t{font:800 24px Heebo;color:var(--mut);direction:ltr;min-width:96px;text-align:right}
+.ok{margin-right:auto;background:#E7F7EC;color:#178A3C;border-radius:30px;padding:4px 16px;font:800 22px Heebo}
+.no{margin-right:auto;background:#FBEAEA;color:#B42318;border-radius:30px;padding:4px 16px;font:800 22px Heebo}
+.gd{margin-right:auto;background:var(--soft);color:#8A6206;border-radius:30px;padding:4px 16px;font:800 22px Heebo}
+.foot{position:absolute;left:56px;right:56px;bottom:44px;direction:ltr;display:flex;justify-content:space-between;align-items:center}
+.foot .h{font:700 30px 'Frank Ruhl Libre';letter-spacing:8px}
+.foot .sv{display:flex;align-items:center;gap:10px;font:800 28px Heebo;direction:rtl}
+.note{position:absolute;font:700 30px Heebo;color:var(--mut)}
+</style></head><body><div id="root"></div>
+<script>
+const HANDLE='TIAMORA';
+const OR='#C9900C';
+const BM=c=>`<svg width="28" height="34" viewBox="0 0 24 28"><path d="M3 2h18v24l-9-6-9 6z" fill="none" stroke="${c}" stroke-width="2.6" stroke-linejoin="round"/></svg>`;
+const foot=(i,n,dark)=>`<div class="foot"><div class="h" style="color:${dark?'#FAF6EF':'#0C1B33'}">${HANDLE}</div>${i<n?`<div class="sv">${BM(dark?'#FAF6EF':'#0C1B33')}שמרו לאחר כך</div>`:''}</div>`;
+const UL=(x,y,w)=>`<svg style="position:absolute;left:${x}px;top:${y}px;width:${w}px;height:26px" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M4 18 C 70 8, 140 24, 210 13 S 280 15, 296 16" stroke="${OR}" stroke-width="8" fill="none" stroke-linecap="round"/></svg>`;
+const win=(x,y,w,title,inner)=>`<div class="win" style="left:${x}px;top:${y}px;width:${w}px"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i><span>${title}</span></div><div class="body">${inner}</div></div>`;
+const barRow=(label,pct,col,val)=>`<div style="display:flex;flex-direction:column;gap:10px"><div style="display:flex;justify-content:space-between;font:800 28px Heebo"><span>${label}</span><span style="direction:ltr;color:${col}">${val}</span></div><div style="height:34px;border-radius:20px;background:#F1ECE2;overflow:hidden;direction:rtl"><div style="width:${pct}%;height:100%;background:${col};border-radius:20px"></div></div></div>`;
+
+const N=7,S=[];
+// 1 COVER
+S.push(`<div class="blob"></div><div class="tag" style="top:84px">שינה · <b>3 דברים שכבר ניסיתם</b></div>
+<h1 style="top:170px;width:952px;font-size:132px">ניסיתם הכל,<br>ועדיין<br><span class="o">לא נרדמים?</span></h1>
+${UL(560,598,450)}
+${win(150,700,870,'הערב שלך',`
+<div class="row"><span class="t">21:30</span><span>Night Shift בטלפון</span><span class="ok">✓ הופעל</span></div>
+<div class="row"><span class="t">22:00</span><span>כדור מלטונין</span><span class="ok">✓ נלקח</span></div>
+<div class="row"><span class="t">22:15</span><span>משקפיים שקופים</span><span class="ok">✓ על הפנים</span></div>
+<div class="row" style="border-color:var(--or)"><span class="t">01:12</span><span>עדיין ער</span><span class="no">?</span></div>`)}
+<div class="sub" style="top:1190px;width:952px;font-size:34px">כל אחד מהם נכשל <b>מסיבה אחרת.</b> החליקו ←</div>
+${foot(1,N)}`);
+// 2 NIGHT SHIFT
+S.push(`<div class="blob"></div><div class="num">01</div><div class="tag"><b>ניסיון 1</b> · Night Shift</div>
+<h1 style="top:300px">מסנן<br><span class="o">מסך אחד.</span></h1>${UL(600,520,360)}
+<div class="sub" style="top:580px">הטלוויזיה, הלפטופ ותאורת הלד בבית<br>ממשיכים לשדר <b>אור כחול ישר לעין.</b></div>
+${win(150,780,870,'מה מסונן הערב',`
+<div class="row"><span>הטלפון</span><span class="ok">✓ מסונן</span></div>
+<div class="row"><span>הטלוויזיה</span><span class="no">✕ לא מסונן</span></div>
+<div class="row"><span>הלפטופ</span><span class="no">✕ לא מסונן</span></div>
+<div class="row"><span>תאורת לד</span><span class="no">✕ לא מסונן</span></div>`)}
+${foot(2,N)}`);
+// 3 MELATONIN
+S.push(`<div class="blob"></div><div class="num">02</div><div class="tag"><b>ניסיון 2</b> · מלטונין</div>
+<h1 style="top:300px">מוסיף<br><span class="o">מבחוץ.</span></h1>${UL(640,520,320)}
+<div class="sub" style="top:580px">אור כחול בערב <b>מדכא את ייצור המלטונין</b> בגוף.<br>כדור מוסיף הורמון מבחוץ,<br>אבל לא עוצר את מה שמדכא אותו מבפנים.</div>
+${win(150,840,870,'מה קורה בפועל',`
+<div class="row"><span class="t">22:00</span><span>מלטונין נכנס לגוף</span><span class="gd">+</span></div>
+<div class="row"><span class="t">22:00–00:00</span><span>מסכים ותאורה</span><span class="no">הדיכוי נמשך</span></div>`)}
+${foot(3,N)}`);
+// 4 CLEAR GLASSES
+S.push(`<div class="blob"></div><div class="num">03</div><div class="tag"><b>ניסיון 3</b> · משקפיים שקופים</div>
+<h1 style="top:300px;width:900px">עדשה שקופה<br><span class="o">לא בנויה ללילה.</span></h1>${UL(420,520,540)}
+<div class="sub" style="top:580px">היא חוסמת רק חלק קטן מהאור הכחול.<br>גם ה-DAY שלנו שקוף, והוא נועד ליום מול מסכים.<br>לשעות שלפני השינה צריך <b>עדשה ענבר.</b></div>
+${win(150,860,870,'חסימת אור כחול',`
+${barRow('עדשה שקופה · DAY',15,'#9AA3B2','15%')}
+${barRow('עדשה ענבר · NIGHT',97,OR,'97%')}`)}
+<div class="note" style="right:64px;top:1200px;font-size:24px">נתוני מוצר של TIAMORA</div>
+${foot(4,N)}`);
+// 5 SOLUTION (dark)
+S.push(`<div class="tag">מה כן עובד</div>
+<h1 style="top:150px;width:952px">לא מוותרים על המסך.<br><span class="o">חוסמים בעין עצמה.</span></h1>
+<div class="sub" style="top:420px;width:952px">NIGHT חוסם <b>97% מהאור הכחול</b> מכל מקור:<br>טלפון, טלוויזיה, לפטופ ותאורה. בלי לשנות את הערב.</div>
+${win(150,680,870,'הערב החדש שלך',`
+<div class="row"><span class="t">21:00</span><span>מרכיבים NIGHT</span><span class="gd">שעתיים לפני השינה</span></div>
+<div class="row"><span class="t">21:00–23:00</span><span>נטפליקס, טלפון, עבודה</span><span class="ok">✓ כרגיל</span></div>
+<div class="row"><span class="t">23:00</span><span>מורידים, מכבים אור</span><span class="ok">✓ לילה טוב</span></div>`)}
+${foot(5,N,true)}`);
+// 6 GUARANTEE
+S.push(`<div class="blob"></div><div class="tag"><b>בלי סיכון</b> · 14 לילות</div>
+<h1 style="top:150px;width:952px">לא מתאים?<br><span class="o">מחזירים בקלות.</span></h1>${UL(460,374,540)}
+<div class="sub" style="top:440px;width:952px">מנסים את NIGHT במשך 14 לילות.<br>לא מרגישים הבדל? מחזירים את המשקפיים בקלות,<br>ו<b>הכסף חוזר במלואו.</b></div>
+${win(150,740,870,'TIAMORA NIGHT',`
+<div class="row"><span>NIGHT · עדשה ענבר</span><span class="gd" style="font-size:28px">₪199</span></div>
+<div class="row"><span>₪199 ÷ 365 לילות</span><span class="ok">פחות מ-55 אג׳ ללילה</span></div>
+<div class="row"><span>14 לילות ניסיון</span><span class="ok">החזרה קלה, כסף מלא</span></div>`)}
+${foot(6,N)}`);
+// 7 CTA
+S.push(`<div class="blob" style="left:auto;right:-260px;top:auto;bottom:-260px"></div>
+<h1 style="top:130px;right:0;width:1080px;text-align:center;font-size:120px">רוצים לנסות<br>לילה אחד אחרת?</h1>
+<div class="sub" style="top:430px;width:1080px;right:0;text-align:center;font-size:42px">תגיבו את המילה</div>
+<div style="position:absolute;left:0;right:0;top:470px;text-align:center;font:900 260px/1.1 'Frank Ruhl Libre';color:${OR}">לילה</div>
+<div class="win" style="left:150px;top:820px;width:780px;box-shadow:12px 12px 0 #0C1B33"><div style="padding:22px 28px;display:flex;align-items:center;gap:18px;direction:ltr"><span style="width:56px;height:56px;border-radius:50%;background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);display:block"></span><div style="flex:1"><div style="font:800 24px Heebo">you</div><div style="font:700 40px Heebo;direction:rtl;text-align:left">לילה</div></div><svg width="40" height="36" viewBox="0 0 24 22"><path d="M12 21s-9-5.6-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-9 12-9 12z" fill="#FF3040"/></svg></div></div>
+<div class="sub" style="top:1010px;width:1080px;right:0;text-align:center;font-size:38px">ונשלח לכם בפרטי את כל הפרטים<br>ואת <b>ערבות 14 הלילות</b></div>
+${foot(7,N)}`);
+document.getElementById('root').innerHTML=S.map((h,i)=>`<section class="s${i===4?' dark':''}">${h}</section>`).join('');
+</script></body></html>

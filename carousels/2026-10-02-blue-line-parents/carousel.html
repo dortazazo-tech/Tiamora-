@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8">
+<title>TIAMORA · הפס הכחול מתחת לדלת</title>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAF6EF;--ink:#0C1B33;--or:#C9900C;--soft:#F3E7CC;--mut:#7C8494;--line:#E6DFD2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1080px;background:#ccc}
+.s{position:relative;width:1080px;height:1350px;overflow:hidden;background:var(--bg);font-family:Heebo,sans-serif;color:var(--ink)}
+.s.dark{background:var(--ink);color:#FAF6EF}
+.s:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#0C1B3309 1px,transparent 1px),linear-gradient(90deg,#0C1B3309 1px,transparent 1px);background-size:54px 54px}
+.s.dark:before{background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px)}
+.blob{position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(#C9900C2e,#C9900C00 68%);left:-260px;top:-240px}
+.num{position:absolute;left:56px;top:56px;font:900 280px/0.8 'Frank Ruhl Libre';color:transparent;-webkit-text-stroke:4px var(--or);direction:ltr}
+.tag{position:absolute;right:64px;top:72px;font:800 30px Heebo;background:var(--ink);color:#FAF6EF;border-radius:40px;padding:6px 26px}
+.dark .tag{background:var(--or);color:var(--ink)}
+.tag b{color:var(--or)}
+h1{position:absolute;right:64px;top:140px;width:760px;font:900 112px/1.02 'Frank Ruhl Libre';text-align:right;letter-spacing:-1px}
+h1 .o{color:var(--or)}
+.sub{position:absolute;right:64px;width:860px;font:500 36px/1.45 Heebo;text-align:right;color:#2B3446}
+.dark .sub{color:#D9DCE3}
+.sub b{color:var(--or);font-weight:800}
+.win{position:absolute;background:#fff;border-radius:26px;border:3px solid var(--ink);box-shadow:12px 12px 0 var(--or);overflow:hidden;color:var(--ink)}
+.bar{height:58px;border-bottom:2px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 22px;direction:ltr;font:700 22px Heebo;color:var(--mut)}
+.bar i{width:15px;height:15px;border-radius:50%;display:block}
+.bar span{margin-left:auto;color:var(--ink);direction:rtl}
+.body{padding:26px 30px;display:flex;flex-direction:column;gap:16px}
+.row{display:flex;align-items:center;gap:16px;border:2px solid var(--line);border-radius:16px;padding:14px 20px;font:700 28px Heebo;background:#fff}
+.row .t{font:800 24px Heebo;color:var(--mut);direction:ltr;min-width:96px;text-align:right}
+.ok{margin-right:auto;background:#E7F7EC;color:#178A3C;border-radius:30px;padding:4px 16px;font:800 22px Heebo}
+.no{margin-right:auto;background:#FBEAEA;color:#B42318;border-radius:30px;padding:4px 16px;font:800 22px Heebo}
+.gd{margin-right:auto;background:var(--soft);color:#8A6206;border-radius:30px;padding:4px 16px;font:800 22px Heebo}
+.foot{position:absolute;left:56px;right:56px;bottom:44px;direction:ltr;display:flex;justify-content:space-between;align-items:center}
+.foot .h{font:700 30px 'Frank Ruhl Libre';letter-spacing:8px}
+.foot .sv{display:flex;align-items:center;gap:10px;font:800 28px Heebo;direction:rtl}
+.note{position:absolute;font:700 30px Heebo;color:var(--mut)}
+.door{position:absolute;left:300px;top:560px;width:480px;height:640px;background:#14264A;border:14px solid #1D3462;border-bottom:none;border-radius:6px 6px 0 0}
+.door:after{content:"";position:absolute;left:34px;top:300px;width:22px;height:60px;border-radius:12px;background:#C9900C}
+.strip{position:absolute;left:286px;top:1200px;width:508px;height:12px;background:#7FC4FF;box-shadow:0 0 30px 12px #3D8BFF99,0 0 90px 30px #3D8BFF44;border-radius:4px}
+.floor{position:absolute;left:0;right:0;top:1212px;height:140px;background:linear-gradient(#3D8BFF22,#0C1B3300 70%)}
+</style></head><body><div id="root"></div>
+<script>
+const HANDLE='TIAMORA';
+const OR='#C9900C';
+const BM=c=>`<svg width="28" height="34" viewBox="0 0 24 28"><path d="M3 2h18v24l-9-6-9 6z" fill="none" stroke="${c}" stroke-width="2.6" stroke-linejoin="round"/></svg>`;
+const foot=(i,n,dark)=>`<div class="foot"><div class="h" style="color:${dark?'#FAF6EF':'#0C1B33'}">${HANDLE}</div>${i<n?`<div class="sv">${BM(dark?'#FAF6EF':'#0C1B33')}שמרו לאחר כך</div>`:''}</div>`;
+const UL=(x,y,w)=>`<svg style="position:absolute;left:${x}px;top:${y}px;width:${w}px;height:26px" viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M4 18 C 70 8, 140 24, 210 13 S 280 15, 296 16" stroke="${OR}" stroke-width="8" fill="none" stroke-linecap="round"/></svg>`;
+const win=(x,y,w,title,inner)=>`<div class="win" style="left:${x}px;top:${y}px;width:${w}px"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i><span>${title}</span></div><div class="body">${inner}</div></div>`;
+const barRow=(label,pct,col,val)=>`<div style="display:flex;flex-direction:column;gap:10px"><div style="display:flex;justify-content:space-between;font:800 28px Heebo"><span>${label}</span><span style="direction:ltr;color:${col}">${val}</span></div><div style="height:34px;border-radius:20px;background:#F1ECE2;overflow:hidden;direction:rtl"><div style="width:${pct}%;height:100%;background:${col};border-radius:20px"></div></div></div>`;
+
+const N=7,S=[];
+// 1 COVER (dark, the hallway)
+S.push(`<div class="tag" style="top:84px">הורים · <b style="color:#0C1B33">22:40</b></div>
+<h1 style="top:150px;width:952px;font-size:118px">הפסקתי לריב איתו<br><span class="o">על הפס הכחול.</span></h1>
+<div class="sub" style="top:430px;width:952px">כבר אמרת לו פעמיים. את לא רוצה שזה יהפוך לעוד מריבה.</div>
+<div class="door"></div><div class="floor"></div><div class="strip"></div>
+${foot(1,N,true)}`);
+// 2 WHAT YOU TRIED
+S.push(`<div class="blob"></div><div class="num">01</div><div class="tag"><b>מה כבר ניסית</b></div>
+<h1 style="top:300px">זה לא שאת<br><span class="o">לא מצליחה.</span></h1>${UL(560,520,400)}
+<div class="sub" style="top:580px">ניסית כל מה שאומרים להורים לעשות.<br>כל אחד מהם נגמר <b>באותו ויכוח.</b></div>
+${win(150,770,870,'מה כבר ניסית',`
+<div class="row"><span>הגבלת זמן מסך</span><span class="no">הוא עקף</span></div>
+<div class="row"><span>"מכבים בעשר וחצי"</span><span class="no">מריבה כל ערב</span></div>
+<div class="row"><span>לקחת את הטלפון</span><span class="no">דלת נטרקת</span></div>
+<div class="row"><span>לדבר איתו ברוגע</span><span class="no">הנהן, המשיך</span></div>`)}
+${foot(2,N)}`);
+// 3 BELIEF 2: LIGHT, NOT DISCIPLINE
+S.push(`<div class="blob"></div><div class="num">02</div><div class="tag"><b>המנגנון</b> · אור</div>
+<h1 style="top:290px;width:1000px;font-size:90px">זו לא שאלה של משמעת.<br><span class="o">זו שאלה של אור.</span></h1>${UL(560,490,420)}
+<div class="sub" style="top:560px">הגוף מייצר <b>מלטונין</b> כשהאור סביבו נחלש.<br>אור כחול מהמסך בערב אומר לגוף שלו: עדיין יום.</div>
+${win(150,800,870,'מה קורה ב-22:40',`
+<div class="row"><span>מסך דולק בחדר החשוך</span><span class="gd">אור כחול</span></div>
+<div class="row"><span>האור נכנס ישר לעיניים</span><span class="gd">"עדיין יום"</span></div>
+<div class="row"><span>ייצור המלטונין</span><span class="no">מדוכא</span></div>`)}
+${foot(3,N)}`);
+// 4 BELIEF 3: PROTECTION WITHOUT A FIGHT (dark)
+S.push(`<div class="tag">הגנה בלי עימות</div>
+<h1 style="top:150px;width:1000px;font-size:88px">לא לוקחים לו את הטלפון.<br><span class="o">משנים את האור.</span></h1>
+<div class="sub" style="top:400px;width:952px">הוא לא צריך לוותר על כלום. את לא צריכה לנצח באף ויכוח.<br>NIGHT חוסם <b>97% מהאור הכחול</b> לפני שהוא מגיע לעיניים.</div>
+${win(150,700,870,'הערב שלו, עם NIGHT',`
+<div class="row"><span>הטלפון</span><span class="ok">✓ נשאר אצלו</span></div>
+<div class="row"><span>השיחה עם החברים</span><span class="ok">✓ ממשיכה</span></div>
+<div class="row"><span>הוויכוח בעשר וחצי</span><span class="gd">אין על מה לריב</span></div>`)}
+${foot(4,N,true)}`);
+// 5 OBJECTION: WILL HE WEAR IT / IS IT SIMPLE
+S.push(`<div class="blob"></div><div class="num">03</div><div class="tag"><b>השאלה האמיתית</b></div>
+<h1 style="top:300px;width:952px">"והוא בכלל<br><span class="o">ישים את זה?"</span></h1>${UL(560,520,400)}
+<div class="sub" style="top:580px">זה נראה כמו משקפיים, לא כמו טיפול.<br>זו עדשה. <b>שמים ומורידים.</b> זה הכל.</div>
+${win(150,780,870,'מה זה בעצם',`
+<div class="row"><span>תוסף</span><span class="no">✕ לא</span></div>
+<div class="row"><span>תרופה</span><span class="no">✕ לא</span></div>
+<div class="row"><span>מכשיר</span><span class="no">✕ לא</span></div>
+<div class="row" style="border-color:var(--or)"><span>עדשה שמרכיבים בערב</span><span class="ok">✓ כן</span></div>`)}
+${foot(5,N)}`);
+// 6 OFFER: TRIO FIRST
+S.push(`<div class="blob"></div><div class="tag"><b>אחד לו, אחד לך</b></div>
+<h1 style="top:150px;width:952px">ככה זה לא<br><span class="o">"מה שאמא הכריחה".</span></h1>${UL(300,374,700)}
+<div class="sub" style="top:440px;width:952px">כשגם את מרכיבה, זה הופך למשהו שעושים ביחד.</div>
+${win(150,600,870,'TIAMORA · למשפחה',`
+<div class="row" style="border-color:var(--or)"><span>TRIO · שני NIGHT ו-DAY</span><span class="gd" style="font-size:28px">₪398</span></div>
+<div class="row"><span>הזוג השלישי במתנה</span><span class="ok">₪169 בכיס</span></div>
+<div class="row"><span>NIGHT · זוג אחד להתחלה</span><span class="gd" style="font-size:28px">₪199</span></div>
+<div class="row"><span>14 לילות ניסיון</span><span class="ok">לא מתאים? מחזירים בקלות</span></div>`)}
+<div class="sub" style="top:1150px;width:952px;font-size:32px">הכסף חוזר במלואו. <b>הסיכון עלינו.</b></div>
+${foot(6,N)}`);
+// 7 CTA
+S.push(`<div class="blob" style="left:auto;right:-260px;top:auto;bottom:-260px"></div>
+<h1 style="top:130px;right:0;width:1080px;text-align:center;font-size:116px">רוצה לנסות<br>ערב אחד בלי ויכוח?</h1>
+<div class="sub" style="top:430px;width:1080px;right:0;text-align:center;font-size:42px">תגיבי את המילה</div>
+<div style="position:absolute;left:0;right:0;top:470px;text-align:center;font:900 260px/1.1 'Frank Ruhl Libre';color:${OR}">ביחד</div>
+<div class="win" style="left:150px;top:820px;width:780px;box-shadow:12px 12px 0 #0C1B33"><div style="padding:22px 28px;display:flex;align-items:center;gap:18px;direction:ltr"><span style="width:56px;height:56px;border-radius:50%;background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);display:block"></span><div style="flex:1"><div style="font:800 24px Heebo">you</div><div style="font:700 40px Heebo;direction:rtl;text-align:left">ביחד</div></div><svg width="40" height="36" viewBox="0 0 24 22"><path d="M12 21s-9-5.6-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-9 12-9 12z" fill="#FF3040"/></svg></div></div>
+<div class="sub" style="top:1010px;width:1080px;right:0;text-align:center;font-size:38px">ונשלח לך בפרטי את כל הפרטים.<br>14 לילות ניסיון, <b>החזרה קלה והכסף חוזר.</b></div>
+${foot(7,N)}`);
+document.getElementById('root').innerHTML=S.map((h,i)=>`<section class="s${(i===0||i===3)?' dark':''}">${h}</section>`).join('');
+</script></body></html>
